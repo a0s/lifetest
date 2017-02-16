@@ -6,3 +6,5 @@ require File.join(File.dirname(__FILE__), 'boot')
 # or create file config/environment.current (by captistrano for example) and put there string 'production'
 
 require 'ruby-app/environment'
+
+Dir["#{App.root}/app/jsonapi/**/*.rb"].each{ |x| require x }

@@ -9,6 +9,7 @@ gem 'activesupport'
 gem 'sinatra'
 gem 'jsonapi-serializers'
 gem 'forgery'
+gem 'thin'
 
 gem 'ripl'
 gem 'ripl-auto_indent'
