@@ -3,12 +3,22 @@
 require File.expand_path(File.join(File.dirname(__FILE__), %w{.. config environment}))
 require 'forgery'
 
+# sqlite
 DB.execute('PRAGMA foreign_keys = OFF;')
-DB[:posts].delete
-DB[:tags].delete
-DB[:post_tags].delete
-DB[:comments].delete
+DB[:posts].truncate
+DB[:tags].truncate
+DB[:post_tags].truncate
+DB[:comments].truncate
+DB[:sqlite_sequence].truncate
 DB.execute('PRAGMA foreign_keys = ON;')
+
+# pg
+# DB.run 'ALTER TABLE posts DISABLE TRIGGER ALL'
+# DB.run 'ALTER TABLE posts ENABLE TRIGGER ALL'
+
+# mysql
+# APIDB.run 'SET FOREIGN_KEY_CHECKS = 0'
+# APIDB.run 'SET FOREIGN_KEY_CHECKS = 1'
 
 (25+rand(10)).times do
   title = Forgery(:lorem_ipsum).words(4+rand(5)).split(' ').shuffle.join(' ')
