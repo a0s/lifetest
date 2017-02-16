@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), %w{.. config environment}))
+require 'forgery'
+
+DB.execute('PRAGMA foreign_keys = OFF;')
+DB[:posts].delete
+DB[:tags].delete
+DB[:post_tags].delete
+DB[:comments].delete
+DB.execute('PRAGMA foreign_keys = ON;')
+
+(25+rand(10)).times do
+  title = Forgery(:lorem_ipsum).words(4+rand(5)).split(' ').shuffle.join(' ')
+  content = Forgery(:lorem_ipsum).words(100+rand(200)).split(' ').shuffle.join(' ')
+  post = Post.create(title: title, content: content)
+
+  (3+rand(7)).times do
+    content = Forgery(:lorem_ipsum).words(20+rand(100)).split(' ').shuffle.join(' ')
+    Comment.create(post: post, content: content)
+  end
+end
+
+(7+rand(10)).times do
+  name = Forgery(:lorem_ipsum).words(15).split(' ').shuffle.map { |s| s[0] }.join
+  Tag.create(name: name)
+end
+
+tag_ids = Tag.select_map(:id)
+Post.each do |post|
+  tag_num = rand(tag_ids.size)
+  tags = tag_ids.shuffle.slice(0, tag_num).map { |id| Tag[id] }
+  tags.each { |tag| post.add_tag(tag) }
+end
+
+puts "posts: #{Post.count}\ncomments: #{Comment.count}\ntags: #{Tag.count}"
