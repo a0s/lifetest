@@ -10,7 +10,7 @@ export PORT=3333
 git clone https://github.com/a0s/lifetest.git
 cd lifetest
 docker build -t lifetest -f docker/Dockerfile .
-docker rm -f lifetest && docker run -itd -p ${PORT}:9292 --name lifetest lifetest
+docker run -itd -p ${PORT}:9292 --name lifetest lifetest
 curl "localhost:${PORT}/posts" -H "Accept: application/vnd.api+json"
 ```
 
