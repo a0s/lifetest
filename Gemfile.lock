@@ -26,7 +26,7 @@ GEM
       activesupport
     minitest (5.11.3)
     mustermann (1.0.3)
-    rack (2.0.7)
+    rack (2.2.3)
     rack-protection (2.0.5)
       rack
     rake (12.3.2)
